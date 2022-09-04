@@ -10,6 +10,10 @@ docker pull jellyfin/jellyfin
 # Or create two persistent volumes:
 mkdir /path/to/config
 mkdir /path/to/cache
+
+# Create persistent storage for configuration and cache data.
+# Either create two directories on the host and use bind mounts:
+# Or create two persistent volumes:
 docker volume create jellyfin-config
 docker volume create jellyfin-cache
 
@@ -39,7 +43,17 @@ podman run \
 # Open the necessary ports in your machine's firewall if you wish to permit access to the Jellyfin server from outside the host.
 # This is not done automatically when using rootless Podman.
 # If your distribution uses firewalld, the following commands save and load a new firewall rule opening the HTTP port 8096 for TCP connections.
-firewalld8096sudo firewall-cmd --add-port=8096/tcp --permanent
+firewalld
+
+# Open the necessary ports in your machine's firewall if you wish to permit access to the Jellyfin server from outside the host.
+# This is not done automatically when using rootless Podman.
+# If your distribution uses firewalld, the following commands save and load a new firewall rule opening the HTTP port 8096 for TCP connections.
+8096
+
+# Open the necessary ports in your machine's firewall if you wish to permit access to the Jellyfin server from outside the host.
+# This is not done automatically when using rootless Podman.
+# If your distribution uses firewalld, the following commands save and load a new firewall rule opening the HTTP port 8096 for TCP connections.
+sudo firewall-cmd --add-port=8096/tcp --permanent
 sudo firewall-cmd --reload
 
 # Next generate the systemd.service file.
@@ -89,6 +103,10 @@ podman stop myjellyfin
 #  At this point the container will only start when the user logs in and shutdown when they log off.
 #  To have the container start as the user at first login we'll have to include one more option.
 systemctl --user enable --now container-myjellyfin.service
+
+# Start and enable the service.
+#  At this point the container will only start when the user logs in and shutdown when they log off.
+#  To have the container start as the user at first login we'll have to include one more option.
 loginctl enable-linger $USER
 
 # To enable Podman auto-updates, enable the necessary systemd timer.
@@ -101,18 +119,43 @@ Add or remove programs
 jellyfin
 
 
-jellyfinsystem
+jellyfin
+
+
+system
+
+# Create jellyfin.bat within your jellyfin folder containing:
+jellyfin.bat
+
+# Create jellyfin.bat within your jellyfin folder containing:
+jellyfin
+
+# To use the default library/data location at %localappdata%:
+%localappdata%
 
 # Create jellyfin.bat within your jellyfin folder containing:
 # To use the default library/data location at %localappdata%:
 # To use a custom library/data location (Path after the -d parameter):
 # To use a custom library/data location (Path after the -d parameter) and disable the auto-start of the webapp:
-jellyfin.batjellyfin%localappdata%<--Your install path-->\jellyfin\system\jellyfin.exe
+<--Your install path-->\jellyfin\system\jellyfin.exe
+
+# Create jellyfin.bat within your jellyfin folder containing:
+# To use the default library/data location at %localappdata%:
+# To use a custom library/data location (Path after the -d parameter):
+# To use a custom library/data location (Path after the -d parameter) and disable the auto-start of the webapp:
 <--Your install path-->\jellyfin\system\jellyfin.exe -d <--Your install path-->\jellyfin\data
+
+# Create jellyfin.bat within your jellyfin folder containing:
+# To use the default library/data location at %localappdata%:
+# To use a custom library/data location (Path after the -d parameter):
+# To use a custom library/data location (Path after the -d parameter) and disable the auto-start of the webapp:
 <--Your install path-->\jellyfin\system\jellyfin.exe -d <--Your install path-->\jellyfin\data -noautorunwebapp
 
 # To use the default library/data location at %localappdata%:
-%localappdata%<--Your install path-->\jellyfin\system\jellyfin.exe
+%localappdata%
+
+# To use the default library/data location at %localappdata%:
+<--Your install path-->\jellyfin\system\jellyfin.exe
 
 # To use a custom library/data location (Path after the -d parameter):
 <--Your install path-->\jellyfin\system\jellyfin.exe -d <--Your install path-->\jellyfin\data
@@ -127,10 +170,16 @@ jellyfin.bat
 http://<--Server-IP-->:8096
 
 
-systemsystem-bak
+system
 
 
-jellyfinsystem
+system-bak
+
+
+jellyfin
+
+
+system
 
 
 jellyfin.bat
@@ -139,7 +188,10 @@ jellyfin.bat
 system
 
 
-system-baksystem
+system-bak
+
+
+system
 
 
 jellyfin.bat
@@ -192,6 +244,8 @@ sudo dnf install (link to web RPM you want to install)
 
 # Enable jellyfin service with systemd
 sudo systemctl start jellyfin
+
+# Enable jellyfin service with systemd
 sudo systemctl enable jellyfin
 
 # Open jellyfin service with firewalld
@@ -206,18 +260,35 @@ sudo firewall-cmd --permanent --add-service=jellyfin
 sudo systemctl reboot
 
 # Go to localhost:8096 or ip-address-of-jellyfin-server:8096 to finish setup in the web UI
-localhost:8096ip-address-of-jellyfin-server:8096
+localhost:8096
+
+# Go to localhost:8096 or ip-address-of-jellyfin-server:8096 to finish setup in the web UI
+ip-address-of-jellyfin-server:8096
 
 # Install HTTPS transport for APT as well as gnupg and lsb-release if you haven't already.
-gnupglsb-releasesudo apt install apt-transport-https gnupg lsb-release
+gnupg
+
+# Install HTTPS transport for APT as well as gnupg and lsb-release if you haven't already.
+lsb-release
+
+# Install HTTPS transport for APT as well as gnupg and lsb-release if you haven't already.
+sudo apt install apt-transport-https gnupg lsb-release
 
 # Import the GPG signing key (signed by the Jellyfin Team):
 curl -fsSL https://repo.jellyfin.org/debian/jellyfin_team.gpg.key | gpg --dearmor -o /etc/apt/trusted.gpg.d/debian-jellyfin.gpg
 
 # Add a repository configuration at /etc/apt/sources.list.d/jellyfin.list:
+/etc/apt/sources.list.d/jellyfin.list
+
+# Add a repository configuration at /etc/apt/sources.list.d/jellyfin.list:
 # Supported releases are buster and bullseye.
-/etc/apt/sources.list.d/jellyfin.listecho "deb [arch=$( dpkg --print-architecture )] https://repo.jellyfin.org/debian $( lsb_release -c -s ) main" | sudo tee /etc/apt/sources.list.d/jellyfin.list
-busterbullseye
+echo "deb [arch=$( dpkg --print-architecture )] https://repo.jellyfin.org/debian $( lsb_release -c -s ) main" | sudo tee /etc/apt/sources.list.d/jellyfin.list
+
+# Supported releases are buster and bullseye.
+buster
+
+# Supported releases are buster and bullseye.
+bullseye
 
 # Update APT repositories:
 sudo apt update
@@ -231,13 +302,25 @@ sudo systemctl restart jellyfin
 sudo /etc/init.d/jellyfin stop
 
 # Download the desired jellyfin and jellyfin-ffmpeg .deb packages from the repository.
-jellyfinjellyfin-ffmpeg.deb
+jellyfin
+
+# Download the desired jellyfin and jellyfin-ffmpeg .deb packages from the repository.
+jellyfin-ffmpeg
+
+# Download the desired jellyfin and jellyfin-ffmpeg .deb packages from the repository.
+.deb
 
 # Install the downloaded .deb packages:
-.debsudo dpkg -i jellyfin_*.deb jellyfin-ffmpeg_*.deb
+.deb
+
+# Install the downloaded .deb packages:
+sudo dpkg -i jellyfin_*.deb jellyfin-ffmpeg_*.deb
 
 # Use apt to install any missing dependencies:
-aptsudo apt -f install
+apt
+
+# Use apt to install any missing dependencies:
+sudo apt -f install
 
 # Manage the Jellyfin system service with your tool of choice:
 sudo service jellyfin status
@@ -245,7 +328,10 @@ sudo systemctl restart jellyfin
 sudo /etc/init.d/jellyfin stop
 
 # Remove the old /etc/apt/sources.list.d/jellyfin.list file:
-/etc/apt/sources.list.d/jellyfin.listsudo rm /etc/apt/sources.list.d/jellyfin.list
+/etc/apt/sources.list.d/jellyfin.list
+
+# Remove the old /etc/apt/sources.list.d/jellyfin.list file:
+sudo rm /etc/apt/sources.list.d/jellyfin.list
 
 # Install HTTPS transport for APT if you haven't already:
 sudo apt install apt-transport-https
@@ -254,15 +340,39 @@ sudo apt install apt-transport-https
 # If the above command fails you will need to install the following package software-properties-common.
 # This can be achieved with the following command sudo apt-get install software-properties-common
 sudo add-apt-repository universe
-software-properties-commonsudo apt-get install software-properties-common
+
+# If the above command fails you will need to install the following package software-properties-common.
+# This can be achieved with the following command sudo apt-get install software-properties-common
+software-properties-common
+
+# If the above command fails you will need to install the following package software-properties-common.
+# This can be achieved with the following command sudo apt-get install software-properties-common
+sudo apt-get install software-properties-common
 
 # Import the GPG signing key (signed by the Jellyfin Team):
 curl -fsSL https://repo.jellyfin.org/ubuntu/jellyfin_team.gpg.key | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/debian-jellyfin.gpg
 
 # Add a repository configuration at /etc/apt/sources.list.d/jellyfin.list:
+/etc/apt/sources.list.d/jellyfin.list
+
+# Add a repository configuration at /etc/apt/sources.list.d/jellyfin.list:
 # Supported releases are bionic, cosmic, disco, eoan, and focal.
-/etc/apt/sources.list.d/jellyfin.listecho "deb [arch=$( dpkg --print-architecture )] https://repo.jellyfin.org/ubuntu $( lsb_release -c -s ) main" | sudo tee /etc/apt/sources.list.d/jellyfin.list
-bioniccosmicdiscoeoanfocal
+echo "deb [arch=$( dpkg --print-architecture )] https://repo.jellyfin.org/ubuntu $( lsb_release -c -s ) main" | sudo tee /etc/apt/sources.list.d/jellyfin.list
+
+# Supported releases are bionic, cosmic, disco, eoan, and focal.
+bionic
+
+# Supported releases are bionic, cosmic, disco, eoan, and focal.
+cosmic
+
+# Supported releases are bionic, cosmic, disco, eoan, and focal.
+disco
+
+# Supported releases are bionic, cosmic, disco, eoan, and focal.
+eoan
+
+# Supported releases are bionic, cosmic, disco, eoan, and focal.
+focal
 
 # Update APT repositories:
 sudo apt update
@@ -280,16 +390,28 @@ sudo add-apt-repository universe
 sudo apt update
 
 # Download the desired jellyfin and jellyfin-ffmpeg .deb packages from the repository.
-jellyfinjellyfin-ffmpeg.deb
+jellyfin
+
+# Download the desired jellyfin and jellyfin-ffmpeg .deb packages from the repository.
+jellyfin-ffmpeg
+
+# Download the desired jellyfin and jellyfin-ffmpeg .deb packages from the repository.
+.deb
 
 # Install the required dependencies:
 sudo apt install at libsqlite3-0 libfontconfig1 libfreetype6 libssl1.0.0
 
 # Install the downloaded .deb packages:
-.debsudo dpkg -i jellyfin_*.deb jellyfin-ffmpeg_*.deb
+.deb
+
+# Install the downloaded .deb packages:
+sudo dpkg -i jellyfin_*.deb jellyfin-ffmpeg_*.deb
 
 # Use apt to install any missing dependencies:
-aptsudo apt -f install
+apt
+
+# Use apt to install any missing dependencies:
+sudo apt -f install
 
 # Manage the Jellyfin system service with your tool of choice:
 sudo service jellyfin status

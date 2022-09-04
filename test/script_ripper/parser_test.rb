@@ -9,6 +9,8 @@ module ScriptRipper
 
       code_blocks = Parser.call(html, "h3")
 
+      assert(code_blocks.is_a?(Hash))
+
       assert_equal([
         "Docker",
         "Unraid Docker",
@@ -36,6 +38,15 @@ module ScriptRipper
           code: <<~CODE
             mkdir /path/to/config
             mkdir /path/to/cache
+          CODE
+        ),
+        CodeBlock.new(
+          description: <<~DESCRIPTION,
+            Create persistent storage for configuration and cache data.
+            Either create two directories on the host and use bind mounts:
+            Or create two persistent volumes:
+          DESCRIPTION
+          code: <<~CODE
             docker volume create jellyfin-config
             docker volume create jellyfin-cache
           CODE
@@ -48,8 +59,9 @@ module ScriptRipper
 
       code_blocks = Parser.call(html)
 
+      assert(code_blocks.is_a?(Array))
       assert(code_blocks.all? { |code_block| code_block.is_a?(CodeBlock) })
-      assert_equal(70, code_blocks.length)
+      assert_equal(108, code_blocks.length)
     end
   end
 end

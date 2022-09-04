@@ -23,6 +23,12 @@ module ScriptRipper
 
         io.puts("#{code_block.code}#{code_suffix}")
       end
+
+      # if $record
+      #   File.open("test/fixtures/jellyfin-ubuntu.sh", "w") do |file|
+      #     file.write(io.string)
+      #   end
+      # end
     end
 
     class << self

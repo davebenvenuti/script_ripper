@@ -63,5 +63,37 @@ module ScriptRipper
 
       assert_equal(expected_output, io.string)
     end
+
+    test "handles multiline code blocks" do
+      code_blocks = [
+        CodeBlock.new(
+          description: "Hello World!",
+          code: "sudo service jellyfin status\nsudo systemctl restart jellyfin\nsudo /etc/init.d/jellyfin stop\n"
+        )
+      ]
+
+      io = StringIO.new
+
+      ScriptWriter.call(
+        code_blocks: code_blocks,
+        io: io,
+        group_name: "Ubuntu",
+        from_url: "https://jellyfin.org/docs/general/administration/installing.html"
+      )
+
+      expected_output = <<~OUTPUT
+        #!/usr/bin/env bash
+
+        # https://jellyfin.org/docs/general/administration/installing.html
+        # Ubuntu
+
+        # Hello World!
+        sudo service jellyfin status
+        sudo systemctl restart jellyfin
+        sudo /etc/init.d/jellyfin stop
+      OUTPUT
+
+      assert_equal(expected_output, io.string)
+    end
   end
 end

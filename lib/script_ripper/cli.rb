@@ -3,9 +3,12 @@ require "optparse"
 require "script_ripper/downloader"
 require "script_ripper/parser"
 require "script_ripper/script_writer"
+require "script_ripper/util"
 
 module ScriptRipper
   class CLI
+    include Util
+
     attr_reader :arguments, :options, :url, :group_name
 
     def initialize(arguments = ARGV)
@@ -17,10 +20,10 @@ module ScriptRipper
       parse_arguments!
 
       content = Downloader.call(url)
-      code_blocks = Parser.call(content, group_by: group_by)
+      code_blocks = Parser.call(content, group_by)
 
       if code_blocks.is_a?(Hash)
-        ScriptWriter.call(code_blocks: code_blocks[group_name], from_url: url, group_name: group_name)
+        ScriptWriter.call(code_blocks: code_blocks.fetch(group_name), from_url: url, group_name: group_name)
       else
         ScriptWriter.call(code_blocks: code_blocks, from_url: url)
       end
@@ -47,7 +50,7 @@ module ScriptRipper
         opts.on(
           "-g GROUPBY",
           "--group-by GROUPBY",
-          "Group by an element type (typically something like h2, h3, etc.  Required if group_name is provided."
+          "Group by an element type, typically something like h2, h3, etc.  Required if group_name is provided."
         )
 
         opts.on("-h", "--help", "Show this message")
@@ -78,17 +81,6 @@ module ScriptRipper
     def fail!
       puts option_parser
       exit 1
-    end
-
-    def present?(value)
-      return false if value.nil?
-      return false if value.respond_to?(:empty?) && value.empty?
-
-      true
-    end
-
-    def blank?(value)
-      !present?(value)
     end
   end
 end

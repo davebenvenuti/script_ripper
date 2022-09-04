@@ -19,7 +19,8 @@ module ScriptRipper
       VCR.insert_cassette("downloader")
 
       @old_stdout = $stdout
-      $stdout = StringIO.new
+      # When debugging is necessary, pass `true` as the second argument $stdout ends up on stdout
+      $stdout = IOProxy.new($stdout, false)
     end
 
     def teardown

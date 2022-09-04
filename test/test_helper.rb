@@ -37,4 +37,25 @@ class Minitest::Test
       end
     end
   end
+
+  class IOProxy
+    def initialize(io, forward_to_original = false)
+      @io = io
+      @stringio = StringIO.new
+      @forward_to_original = forward_to_original
+    end
+
+    def method_missing(method, *args, &block)
+      @stringio.send(method, *args, &block)
+      @io.send(method, *args, &block) if @forward_to_original
+    end
+
+    def respond_to_missing?(method, include_private = false)
+      @io.respond_to?(method, include_private)
+    end
+
+    def string
+      @stringio.string
+    end
+  end
 end
