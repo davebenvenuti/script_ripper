@@ -2,6 +2,9 @@
 
 Given a website like https://jellyfin.org/docs/general/administration/installing.html
 
+<img width="730" alt="Screen Shot 2022-09-03 at 6 27 20 PM" src="https://user-images.githubusercontent.com/302063/188293241-8d7c79ac-33d8-418d-9f53-542a090004df.png">
+
+
 Get a bash script like
 
 ```bash
