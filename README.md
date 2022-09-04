@@ -1,29 +1,35 @@
 # Script::Ripper
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/script/ripper`. To experiment with that code, run `bin/console` for an interactive prompt.
+Given a website like https://jellyfin.org/docs/general/administration/installing.html
 
-TODO: Delete this and the text above, and describe your gem
+Get a bash script like
+
+```bash
+# https://jellyfin.org/docs/general/administration/installing.html
+
+# Download the latest container image.
+docker pull jellyfin/jellyfin
+
+# Create persistent storage for configuration and cache data.
+# Either create two directories on the host and use bind mounts:
+# Or create two persistent volumes:
+mkdir /path/to/config
+mkdir /path/to/cache
+docker volume create jellyfin-config
+docker volume create jellyfin-cache
+```
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'script_ripper'
+```bash
+gem install script_ripper
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install script_ripper
 
 ## Usage
 
-TODO: Write usage instructions here
-
+```bash
+script_ripper -g h4 "https://jellyfin.org/docs/general/administration/installing.html" "Ubuntu"
+```
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -32,7 +38,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/script_ripper.
+Bug reports and pull requests are welcome on GitHub at https://github.com/davebenvenuti/script_ripper.
 
 ## License
 
