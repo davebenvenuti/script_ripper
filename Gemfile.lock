@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    script_ripper (0.2.0)
+    script_ripper (0.2.1)
       nokogiri (~> 1.13)
 
 GEM
