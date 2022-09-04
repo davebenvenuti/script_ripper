@@ -5,6 +5,12 @@ require "script_ripper/version"
 
 `bundle`
 
+if `git branch --show-current` != "master"
+  $stderr.puts "You must be on the master branch to release a new version."
+
+  exit 1
+end
+
 if `git status -s`.length > 0
   $stderr.puts "Please commit all changes first"
 
