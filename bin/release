@@ -5,7 +5,7 @@ require "script_ripper/version"
 
 `bundle`
 
-if `git branch --show-current` != "master"
+if `git branch --show-current`.chomp != "master"
   $stderr.puts "You must be on the master branch to release a new version."
 
   exit 1
