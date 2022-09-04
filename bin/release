@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "script_ripper/version"
+
+puts `git tag -a v#{ScriptRipper::VERSION} -m "Release v#{ScriptRipper::VERSION}"`
